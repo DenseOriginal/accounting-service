@@ -1,0 +1,48 @@
+<div class="p-5 pr-6 md:p-16">
+    <app-header></app-header>
+
+    <div class="mt-8">
+        <div class="flex justify-between mb-8">
+            <h1 class="ml-4 text-gray-700">History</h1>
+            <button type="submit" (click)="modalToggle()" class="px-2 rounded-lg border-2 border-blue-300 hover:bg-gray-200 focus:outline-none">New Payment</button>
+        </div>
+        <div id="history">
+            <div *ngFor="let payment of payments | async">
+                <app-history-detail [paymentData]="payment"></app-history-detail>
+            </div>
+            <!-- <app-history-detail *ngFor="let payment of payments | async" [paymentData]="payment">
+            </app-history-detail> -->
+        </div>
+
+        <div *ngIf="modalShow" class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center">
+            <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+            
+            <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                <!-- Add margin if you want to see some of the overlay behind the modal-->
+                <div class="modal-content py-4 text-left px-6">
+                    <!--Title-->
+                    <div class="pb-3">
+                        <p class="text-2xl font-bold">Log New Payment!</p>
+                    </div>
+            
+                    <!--Body-->
+                    <div class="block">
+                        <form id="paymentForm" #paymentForm="ngForm" (ngSubmit)="onSubmitForm(paymentForm)" novalidate>
+                            <input #amount="ngModel" [(ngModel)]="newPayment.amount" name="amount" required class="block w-full bg-gray-300 p-2 focus:outline-none rounded" type="number" placeholder="Amount">
+                            <p [hidden]="amount.valid || (amount.pristine && !paymentForm.submitted)" class="text-red-400">Please enter an amount</p>
+                            <input #note="ngModel" [(ngModel)]="newPayment.note" name="note" class="block w-full bg-gray-300 mb-2 mt-2 p-2 focus:outline-none rounded" type="text" placeholder="Note?">
+                            
+                            <div class="flex justify-end pt-2">
+                                <button type="submit" class="px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-2 focus:outline-none">Create</button>
+                                <button (click)="modalToggle(); paymentForm.reset()" class="px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400 focus:outline-none">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+            
+                    <!--Footer-->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
